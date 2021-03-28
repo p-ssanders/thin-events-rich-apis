@@ -8,7 +8,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.2.3.RELEASE'
+        classpath 'org.springframework.cloud:spring-cloud-contract-gradle-plugin:3.0.2'
     }
 }
 
@@ -18,7 +18,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    runtimeOnly 'io.pivotal.cfenv:java-cfenv-boot'
     runtimeOnly 'com.h2database:h2'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

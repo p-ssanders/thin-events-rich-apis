@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.3.1.RELEASE' apply false
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE' apply false
+    id 'org.springframework.boot' version '2.4.4' apply false
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
 }
 
 allprojects {
@@ -10,7 +10,6 @@ allprojects {
     sourceCompatibility = '11'
 
     repositories {
-        mavenLocal()
         mavenCentral()
     }
 }
@@ -22,10 +21,9 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR6'
+            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2020.0.2'
         }
         dependencies {
-            dependency 'io.pivotal.cfenv:java-cfenv-boot:2.1.2.RELEASE'
             dependency 'org.apache.qpid:qpid-broker-core:8.0.0'
             dependency 'org.apache.qpid:qpid-broker-plugins-amqp-0-8-protocol:8.0.0'
             dependency 'org.apache.qpid:qpid-broker-plugins-memory-store:8.0.0'
