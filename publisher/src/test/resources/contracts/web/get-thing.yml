@@ -1,0 +1,12 @@
+name: get-thing
+request:
+  method: GET
+  url: /things/1
+  headers:
+    Accept: application/json;charset=UTF-8
+response:
+  status: 200
+  headers:
+    Content-Type: application/json;charset=UTF-8
+  body:
+    content: some-content

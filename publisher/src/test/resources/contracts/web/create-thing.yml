@@ -1,0 +1,12 @@
+name: create-thing
+request:
+  method: POST
+  url: /things
+  headers:
+    Content-Type: application/json;charset=UTF-8
+  body:
+    content: some-content
+response:
+  status: 201
+  headers:
+    Location: http://localhost/things/1

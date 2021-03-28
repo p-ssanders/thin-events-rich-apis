@@ -1,0 +1,16 @@
+label: publish-thing-event
+input:
+  triggeredBy: publishAllUnpublishedThingEvents()
+outputMessage:
+  sentTo: publisher-thing-events
+  headers:
+    contentType: application/json
+    __TypeId__: dev.samsanders.demo.rabbitmq.publisher.app.ThingEventPublisher$ThingEventDto
+  body:
+    thingUri: https://samsanders.dev/things/1
+    createdInstant: 1603761356.035423000
+  matchers:
+    body:
+      - path: $.createdInstant
+        type: by_regex
+        predefined: iso_8601_with_offset

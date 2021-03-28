@@ -1,0 +1,40 @@
+import org.springframework.cloud.contract.verifier.config.TestFramework
+
+apply plugin: 'maven-publish'
+apply plugin: 'spring-cloud-contract'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.2.3.RELEASE'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    runtimeOnly 'io.pivotal.cfenv:java-cfenv-boot'
+    runtimeOnly 'com.h2database:h2'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.apache.qpid:qpid-broker-core'
+    testImplementation 'org.apache.qpid:qpid-broker-plugins-amqp-0-8-protocol'
+    testImplementation 'org.apache.qpid:qpid-broker-plugins-memory-store'
+    testCompile 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+}
+
+contracts {
+    testFramework = TestFramework.JUNIT5
+    packageWithBaseClasses = 'dev.samsanders.demo.rabbitmq.publisher.contracts'
+}
+
+build {
+    dependsOn('publishToMavenLocal')
+}

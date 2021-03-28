@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.3.1.RELEASE' apply false
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE' apply false
+}
+
+allprojects {
+    group = 'dev.samsanders.demo.rabbitmq'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '11'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencyManagement {
+        imports {
+            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR6'
+        }
+        dependencies {
+            dependency 'io.pivotal.cfenv:java-cfenv-boot:2.1.2.RELEASE'
+            dependency 'org.apache.qpid:qpid-broker-core:8.0.0'
+            dependency 'org.apache.qpid:qpid-broker-plugins-amqp-0-8-protocol:8.0.0'
+            dependency 'org.apache.qpid:qpid-broker-plugins-memory-store:8.0.0'
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

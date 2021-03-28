@@ -1,0 +1,21 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    runtimeOnly 'io.pivotal.cfenv:java-cfenv-boot'
+    runtimeOnly 'com.h2database:h2'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.apache.qpid:qpid-broker-core'
+    testImplementation 'org.apache.qpid:qpid-broker-plugins-amqp-0-8-protocol'
+    testImplementation 'org.apache.qpid:qpid-broker-plugins-memory-store'
+    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+}
+
+test {
+    dependsOn(':publisher:build')
+}
