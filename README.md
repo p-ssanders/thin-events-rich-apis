@@ -40,7 +40,7 @@ thread, and RabbitMQ ACKs and NACKs.
 
 Run a RabbitMQ instance
 ```shell
-docker run -d --hostname rabbitmq-demo --name rabbitmq-demo rabbitmq:3
+docker run -d --hostname rabbitmq --name demo -p 5672:5672 -p 15672:15672 rabbitmq:3-management
 ```
 
 Run the publisher
