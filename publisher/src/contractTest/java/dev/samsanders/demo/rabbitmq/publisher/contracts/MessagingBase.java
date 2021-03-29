@@ -6,10 +6,8 @@ import dev.samsanders.demo.rabbitmq.publisher.thing.ThingEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureMessageVerifier;
-import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles({"test", "contract-test"})
 @AutoConfigureMessageVerifier
 public class MessagingBase {
 

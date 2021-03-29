@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ActiveProfiles({"test", "contract-test"})
+@ActiveProfiles("contract-test")
 @AutoConfigureStubRunner(
         ids = {"dev.samsanders.demo.rabbitmq:publisher:+"},
         stubsMode = StubRunnerProperties.StubsMode.LOCAL
