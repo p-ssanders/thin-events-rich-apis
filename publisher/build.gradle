@@ -23,10 +23,9 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    testImplementation 'org.apache.qpid:qpid-broker-core'
-    testImplementation 'org.apache.qpid:qpid-broker-plugins-amqp-0-8-protocol'
-    testImplementation 'org.apache.qpid:qpid-broker-plugins-memory-store'
     testCompile 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+    testCompile 'org.testcontainers:testcontainers'
+    testCompile 'org.testcontainers:junit-jupiter'
 }
 
 contracts {

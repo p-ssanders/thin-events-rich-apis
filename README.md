@@ -1,34 +1,35 @@
 #   Thin Events / Rich APIs Reference Implementation
 
-Reference implementation that demonstrates the "thin events / rich apis" integration pattern using Spring AMQP and
-RabbitMQ.
+This repository contains a reference implementation that demonstrates the "thin events / rich apis" integration pattern
+using Spring Boot and RabbitMQ.
 
 There are two applications:
 *   `publisher`
 *   `consumer`
 
 The `publisher` publishes events when its state changes (e.g.: the collection of entities it manages changes), and the
-`consumer` consumes those events. We assume that the consumer's bounded context has some mapping to the publisher's
+`consumer` consumes those events. Assume that the consumer's bounded context has some mapping to the publisher's
 bounded context, and the events are how the publisher notifies the consumer of changes in state so that the consumer
-can update itself accordingly. For simplicity there is no actual business logic implemented to demonstrate the assumed
-context mapping.
+can update itself accordingly. For simplicity there is no actual domain implemented to demonstrate the assumed context
+mapping.
 
-The events are "thin" meaning they don't contain enough information for a consumer to update its own state accordingly.
-Instead, the events contain just enough information to inform a consumer of how to get the information it needs to
-update its own state. In this example, the event payload contains the URL of the entity that changed. The consumer can
-use that URL to make a request to the publisher's API to get the information necessary to update itself.
+The published events are "thin" meaning they don't contain enough information for a consumer to update its own state
+accordingly. Instead, the events contain just enough information to inform a consumer of how to get the information it
+might need to update its own state. In this example, the event payload contains the URL of the entity that changed, and
+a timestamp of when the event occurred. The consumer can make a request to the URL to get the information it needs to
+update itself.
 
 The RabbitMQ [Fanout Exchange](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-fanout) is used so that
-the publisher can be certain events will be published to whoever is listening at the moment, even if it's no one. The
-publisher doesn't care if anyone is listening because its own internal state is consistent; it's only publishing events
-to be a good participant in a system, allowing other applications to react to change in its state, extremely similar to
-how an aggregate root publishes domain events.
+the publisher can be certain events will be published to whomever is listening at the moment, even if it's no one. The
+publisher doesn't care if anyone is listening because its own internal state is consistent; it's publishing events to be
+a good participant in a system, allowing other applications to react to change in its state, very similar to how an
+aggregate root publishes domain events.
 
 This implementation also includes patterns to guarantee eventual event publication such as the persistence of events
 themselves with publication metadata, the delegation of responsibility of event publication to a background thread, and
 RabbitMQ publisher confirms. The consumer's implementation guarantees eventual reaction to events in a similar way such
 as the persistence of received events, the delegation of responsibility of reaction to received events to a background
-thread, and RabbitMQ ACKs and NACKs.
+thread, and consumer acknowledgments.
 
 ![system-visualization](system-visualization.jpg)
 
@@ -112,12 +113,6 @@ distinct methodologies:
 
 The `publisher` application has a suite of integration tests in [PublisherApplicationTests](publisher/src/test/java/dev/samsanders/demo/rabbitmq/publisher/PublisherApplicationTests.java)
 
-These tests use an embedded [Apache Qpid](https://qpid.apache.org/) AMQP broker. Note that this embedded AMQP broker is
-not RabbitMQ. This decision accepts the tradeoff of speed and portability in favor of dev/prod-parity, relying on the
-AMQP standard as a mitigation. The embedded nature of the broker also obviates the need for a dedicated AMQP broker,
-network connectivity for automated tests, or additional environmental requirements (e.g.: Docker) in CI. This decision
-is easily debatable, and is not based on a strongly-held opinion.
-
 The primary focus of these tests is _how_ information is published.
 
 For example, in the `publisher`'s `happyPath` test expects that an event is created when a `Thing` is created, and that
@@ -175,4 +170,4 @@ For details review the [`ConsumerStubTests`](consumer/src/test/java/dev/samsande
 *   [Spring Cloud Contract Stub Runner](https://cloud.spring.io/spring-cloud-contract/reference/html/project-features.html#features-stub-runner)
 *   [Maven Publish Plugin](https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven)
 *   [Integration Tests](https://martinfowler.com/bliki/IntegrationTest.html)
-*   [Apache Qpid Broker-J](https://qpid.apache.org/releases/qpid-broker-j-7.0.4/book/index.html)
+*   [Testcontainers](https://www.testcontainers.org/)
