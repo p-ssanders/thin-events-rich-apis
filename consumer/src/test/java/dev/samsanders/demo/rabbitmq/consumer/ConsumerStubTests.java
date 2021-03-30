@@ -16,11 +16,11 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ActiveProfiles("contract-test")
 @AutoConfigureStubRunner(
-        ids = {"dev.samsanders.demo.rabbitmq:publisher:+"},
+        ids = {"dev.samsanders.demo.rabbitmq:publisher:0.0.1-SNAPSHOT:stubs"},
         stubsMode = StubRunnerProperties.StubsMode.LOCAL
 )
+@ActiveProfiles("test")
 public class ConsumerStubTests {
 
     @Autowired

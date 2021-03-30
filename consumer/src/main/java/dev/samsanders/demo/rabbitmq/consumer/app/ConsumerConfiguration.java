@@ -53,7 +53,7 @@ public class ConsumerConfiguration {
         return messageListenerContainer;
     }
 
-    @Profile("!contract-test")
+    @Profile("!test")
     @Bean
     AbstractMessageListenerContainer abstractMessageListenerContainer(ConnectionFactory connectionFactory) {
         return new DirectMessageListenerContainer(connectionFactory);
