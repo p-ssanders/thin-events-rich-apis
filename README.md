@@ -20,7 +20,7 @@ a timestamp of when the event occurred. The consumer can make a request to the U
 update itself.
 
 The RabbitMQ [Fanout Exchange](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-fanout) is used so that
-the publisher can be certain events will be published to whomever is listening at the moment, even if it's no one. The
+the publisher can be certain events will be published to whoever is listening at the moment, even if it's no one. The
 publisher doesn't care if anyone is listening because its own internal state is consistent; it's publishing events to be
 a good participant in a system, allowing other applications to react to change in its state, very similar to how an
 aggregate root publishes domain events.
