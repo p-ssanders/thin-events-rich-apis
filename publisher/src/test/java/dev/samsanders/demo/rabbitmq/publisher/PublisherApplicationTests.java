@@ -90,7 +90,7 @@ class PublisherApplicationTests {
         countDownLatch.await(1000L, TimeUnit.MILLISECONDS);
         assertEquals(0, countDownLatch.getCount());
         thingEvents =
-                StreamUtils.createStreamFromIterator(thingEventRepository.findAllByThingId(1L).iterator())
+                StreamUtils.createStreamFromIterator(thingEventRepository.findAllByThingId(thingId).iterator())
                         .collect(Collectors.toList());
         assertEquals(1, thingEvents.size());
         assertNotNull(thingEvents.get(0).getPublishedInstant());

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.net.URI;
@@ -21,11 +22,17 @@ public class ThingEventPublisher {
     private final ThingEventRepository thingEventRepository;
     private final String baseUrl;
 
-    public ThingEventPublisher(RabbitTemplate rabbitTemplate, ThingEventRepository thingEventRepository,
+    public ThingEventPublisher(RabbitTemplate rabbitTemplate,
+                               ThingEventRepository thingEventRepository,
                                String baseUrl) {
         this.rabbitTemplate = rabbitTemplate;
         this.thingEventRepository = thingEventRepository;
         this.baseUrl = baseUrl;
+    }
+
+    @EventListener(ThingEvent.class)
+    public void saveThingEvent(ThingEvent thingEvent) {
+        thingEventRepository.save(thingEvent);
     }
 
     @Scheduled(fixedRate = 2000L)

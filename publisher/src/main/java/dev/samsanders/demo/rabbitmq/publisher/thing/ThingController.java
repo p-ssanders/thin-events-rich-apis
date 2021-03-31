@@ -15,20 +15,15 @@ import java.util.Optional;
 public class ThingController {
 
     private final ThingRepository thingRepository;
-    private final ThingEventRepository thingEventRepository;
 
-    ThingController(ThingRepository thingRepository, ThingEventRepository thingEventRepository) {
+    ThingController(ThingRepository thingRepository) {
         this.thingRepository = thingRepository;
-        this.thingEventRepository = thingEventRepository;
     }
 
     @PostMapping
     @Transactional
     public ResponseEntity<Void> create(@RequestBody Thing thing) {
         thing = thingRepository.save(thing);
-
-        thingEventRepository.save(new ThingEvent(thing.getId()));
-
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(thing.getId()).toUri();
         return ResponseEntity.created(location).build();
     }

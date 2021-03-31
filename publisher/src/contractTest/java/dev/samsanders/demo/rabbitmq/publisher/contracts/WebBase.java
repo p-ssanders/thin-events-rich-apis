@@ -31,9 +31,7 @@ public class WebBase {
     void before() {
         RestAssuredMockMvc.mockMvc(mockMvc);
 
-        Thing thing = new Thing();
-        thing.setId(1);
-        thing.setContent("some-content");
+        Thing thing = new Thing("some-content");
         when(thingRepository.save(any())).thenReturn(thing);
         when(thingRepository.findById(any())).thenReturn(Optional.of(thing));
     }

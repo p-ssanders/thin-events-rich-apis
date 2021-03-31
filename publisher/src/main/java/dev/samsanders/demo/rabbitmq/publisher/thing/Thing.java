@@ -1,33 +1,39 @@
 package dev.samsanders.demo.rabbitmq.publisher.thing;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.domain.AbstractAggregateRoot;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
-public class Thing {
+public class Thing extends AbstractAggregateRoot<Thing> {
+
+    private static final AtomicInteger idGenerator = new AtomicInteger();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String content;
+
+    public Thing() {
+    }
+
+    @JsonCreator
+    public Thing(@JsonProperty("content") String content) {
+        this.id = idGenerator.getAndIncrement();
+        this.content = content;
+        this.registerEvent(new ThingEvent(this.getId()));
+    }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getContent() {
         return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     @Override
