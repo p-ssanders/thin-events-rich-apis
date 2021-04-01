@@ -137,8 +137,8 @@ where. This contract is used by Spring Cloud Contract at build time to automatic
 contract is accurate, as well as to generate a "stub" jar that can be used by a consumer to build an integration with
 confidence, yet without necessarily having access to an instance of `publisher`.
 
-For details review the `publisher` [messaging contract](publisher/src/test/resources/contracts/messaging/publish-thing-event.yml)
-, the [generated contract tests](publisher/build/generated-test-sources/contracts/dev/samsanders/demo/rabbitmq/publisher/contracts/MessagingTest.java)
+For details review the `publisher` [messaging contract](publisher/src/contractTest/resources/contracts/messaging/publish-thing-event.yml)
+, the [generated contract tests](publisher/build/generated-test-sources/contractTest/java/dev/samsanders/demo/rabbitmq/publisher/contracts/MessagingTest.java)
 , and observe the generated [stubs jar](publisher/build/libs/publisher-0.0.1-SNAPSHOT-stubs.jar) alongside the
 application jar. Note the `publisher` also has contracts, and tests for its web API so that consumers of the
 messages/events can also build a reaction to those events with confidence.
