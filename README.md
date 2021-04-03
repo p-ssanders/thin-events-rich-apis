@@ -119,7 +119,11 @@ For example, in the `publisher`'s `happyPath` test expects that an event is crea
 event is unpublished until the `ThingEventPublisher` is called upon to do its job: `publishAllUnpublishedThingEvents`.
 Once that job is done, the test expects that the event has been published.
 
-Review the integration tests to learn more.
+Review the integration tests to learn more. Note these tests use an embedded [Apache Qpid](https://qpid.apache.org/)
+AMQP broker, and that this embedded AMQP broker is not RabbitMQ. This decision accepts the tradeoff of speed and
+portability in favor of dev/prod-parity, relying on the AMQP standard as a mitigation. The embedded nature of the broker
+also obviates the need for a dedicated AMQP broker, network connectivity for automated tests, or additional
+environmental requirements (e.g.: Docker) in CI. This decision not based on a strongly-held opinion.
 
 The `consumer` doesn't have this type of test because all it does is consume information from the `publisher`, and that
 can be tested using contract tests. However, a real consumer application with actual functionality would probably need
@@ -170,4 +174,3 @@ For details review the [`ConsumerStubTests`](consumer/src/test/java/dev/samsande
 *   [Spring Cloud Contract Stub Runner](https://cloud.spring.io/spring-cloud-contract/reference/html/project-features.html#features-stub-runner)
 *   [Maven Publish Plugin](https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven)
 *   [Integration Tests](https://martinfowler.com/bliki/IntegrationTest.html)
-*   [Testcontainers](https://www.testcontainers.org/)

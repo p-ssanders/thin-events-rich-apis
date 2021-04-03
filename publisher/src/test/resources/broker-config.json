@@ -1,0 +1,51 @@
+{
+  "name": "embedded amqp broker",
+  "modelVersion": "7.1",
+  "authenticationproviders": [
+    {
+      "name": "auth",
+      "type": "Plain",
+      "secureOnlyMechanisms": [],
+      "users": [
+        {
+          "type": "managed",
+          "name": "user",
+          "password": "password"
+        }
+      ]
+    }
+  ],
+  "ports": [
+    {
+      "name": "AMQP",
+      "port": "${qpid.amqp_port}",
+      "bindingAddress": "127.0.0.1",
+      "protocols": [
+        "AMQP_0_9_1"
+      ],
+      "authenticationProvider": "auth",
+      "virtualhostaliases": [
+        {
+          "name": "nameAlias",
+          "type": "nameAlias"
+        },
+        {
+          "name": "defaultAlias",
+          "type": "defaultAlias"
+        },
+        {
+          "name": "hostnameAlias",
+          "type": "hostnameAlias"
+        }
+      ]
+    }
+  ],
+  "virtualhostnodes": [
+    {
+      "name": "default",
+      "type": "Memory",
+      "defaultVirtualHostNode": "true",
+      "virtualHostInitialConfiguration": "{\"type\": \"Memory\"}"
+    }
+  ]
+}
