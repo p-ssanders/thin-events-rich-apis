@@ -6,12 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
+@Profile("test")
 public class PublisherTestConfiguration {
 
     @Value("${test.broker.config.file-location}")
     String brokerConfigFileLocation;
 
-    @Profile("test")
     @Bean
     public EmbeddedAmqpBroker embeddedAmqpBroker() {
         return new EmbeddedAmqpBroker(brokerConfigFileLocation);

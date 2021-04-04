@@ -1,3 +1,5 @@
+import org.springframework.cloud.contract.verifier.config.TestFramework
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -10,9 +12,9 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.apache.qpid:qpid-broker-core'
-    testImplementation 'org.apache.qpid:qpid-broker-plugins-amqp-0-8-protocol'
-    testImplementation 'org.apache.qpid:qpid-broker-plugins-memory-store'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+    testRuntimeOnly 'org.apache.qpid:qpid-broker-plugins-amqp-0-8-protocol'
+    testRuntimeOnly 'org.apache.qpid:qpid-broker-plugins-memory-store'
 }
 
 test {

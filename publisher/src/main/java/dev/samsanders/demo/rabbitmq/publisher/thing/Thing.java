@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Entity
 public class Thing extends AbstractAggregateRoot<Thing> {
 
-    private static final AtomicInteger idGenerator = new AtomicInteger();
+    private static final AtomicInteger idGenerator = new AtomicInteger(1);
 
     @Id
     private long id;
