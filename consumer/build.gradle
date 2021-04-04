@@ -1,4 +1,6 @@
-import org.springframework.cloud.contract.verifier.config.TestFramework
+plugins {
+    id 'org.springframework.cloud.contract'
+}
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -19,4 +21,12 @@ dependencies {
 
 test {
     dependsOn(':publisher:build')
+}
+
+contractTest {
+    useJUnitPlatform()
+}
+
+contracts {
+    failOnNoContracts = false
 }
