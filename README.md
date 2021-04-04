@@ -100,7 +100,7 @@ operations of the system:
 
 ##  Test
 
-The functionality of the `publisher` and `consumer` applications is documented using automated test that apply two
+The functionality of the `publisher` and `consumer` applications is verified using automated tests that apply two
 distinct methodologies:
 
 1.  Black-box application tests
@@ -113,56 +113,44 @@ distinct methodologies:
 
 The `publisher` application has a suite of integration tests in [PublisherApplicationTests](publisher/src/test/java/dev/samsanders/demo/rabbitmq/publisher/PublisherApplicationTests.java)
 
-The primary focus of these tests is _how_ information is published.
+The primary focus of these tests is how information is published.
 
-For example, in the `publisher`'s `happyPath` test expects that an event is created when a `Thing` is created, and that
-event is unpublished until the `ThingEventPublisher` is called upon to do its job: `publishAllUnpublishedThingEvents`.
-Once that job is done, the test expects that the event has been published.
-
-Review the integration tests to learn more. Note these tests use an embedded [Apache Qpid](https://qpid.apache.org/)
-AMQP broker, and that this embedded AMQP broker is not RabbitMQ. This decision accepts the tradeoff of speed and
-portability in favor of dev/prod-parity, relying on the AMQP standard as a mitigation. The embedded nature of the broker
-also obviates the need for a dedicated AMQP broker, network connectivity for automated tests, or additional
-environmental requirements (e.g.: Docker) in CI. This decision not based on a strongly-held opinion.
+Note these tests use an embedded [Apache Qpid](https://qpid.apache.org/) AMQP broker, and that this embedded AMQP broker
+is not RabbitMQ. This decision accepts the tradeoff of speed and portability in favor of dev/prod-parity, relying on the
+AMQP standard as a mitigation. The embedded nature of the broker also obviates the need for a dedicated AMQP broker,
+network connectivity for automated tests, or additional environmental requirements (e.g.: Docker).
+This decision not based on a strongly-held opinion, so let me know if you have alternative ideas!
 
 The `consumer` doesn't have this type of test because all it does is consume information from the `publisher`, and that
-can be tested using contract tests. However, a real consumer application with actual functionality would probably need
-one to test that functionality.
+can be tested using contract tests. A real consumer application with actual functionality would probably need one to
+test that functionality.
 
 ### Contract Tests
 
 #### Publisher
 
-The `publisher` application's ability to create and publish events is documented by the black-box application tests, but
+The `publisher` application's ability to create and publish events is verified by the black-box application tests, but
 what about _what_ is published?
 
-The `publisher` application addresses this concern by defining a contract that specifies what is published, and to
-where. This contract is used by Spring Cloud Contract at build time to automatically generate tests that validate the
-contract is accurate, as well as to generate a "stub" jar that can be used by a consumer to build an integration with
-confidence, yet without necessarily having access to an instance of `publisher`.
+The `publisher` application contains a contract definition that specifies what is published, and to where. The contract
+is used by Spring Cloud Contract at build time to generate contract tests that validate the application fulfills the
+terms of the contract. Additionally, the contract itself is built into an additional "stub" jar that can be published
+somewhere that consumers can access, so that consumers can use the contract to validate their integrations rather than
+needing access to an instance of `publisher`.
 
-For details review the `publisher` [messaging contract](publisher/src/contractTest/resources/contracts/messaging/publish-thing-event.yml)
+For details review the `publisher` [messaging contract](publisher/src/contractTest/resources/contracts/messaging/publishThingEvent.yml)
 , the [generated contract tests](publisher/build/generated-test-sources/contractTest/java/dev/samsanders/demo/rabbitmq/publisher/contracts/MessagingTest.java)
-, and observe the generated [stubs jar](publisher/build/libs/publisher-0.0.1-SNAPSHOT-stubs.jar) alongside the
-application jar. Note the `publisher` also has contracts, and tests for its web API so that consumers of the
-messages/events can also build a reaction to those events with confidence.
+, and observe the generated [stubs jar](publisher/build/libs/) alongside the application jar.
+Note the `publisher` also has contracts, and tests for its web API so that consumers of the messages/events can also
+build a reaction to those events with confidence.
 
 #### Consumer
 
-The `consumer` application intends to consume events published by `publisher`, so it's important that the `consumer`
-knows exactly what those events look like. The `consumer` also intends to react to the events by making requests to the
-`publisher`'s web API. What could be better than using a stub artifact created and verified by the `publisher` itself
-that provides build-time assurance of both the messaging and web APIs?
-
-The `consumer` downloads the stub jar generated by the `publisher` using Spring Cloud Contract's Stub Runner:
-> Stub Runner lets you automatically download the stubs of the provided dependencies (or pick those from the classpath), start WireMock servers for them, and feed them with proper stub definitions. For messaging, special stub routes are defined.
-> (https://cloud.spring.io/spring-cloud-contract/reference/html/project-features.html#features-stub-runner-core)
-
-The `consumer` accomplishes this using a test with the `@AutoConfigureStubRunner` annotation which specifies where the
-stubs can be found.
-
-The test can use `StubTrigger` to publish an event that conforms to the contract defined by the publisher, effectively
-allowing the `consumer` code to execute as it would in an integration environment.
+The `consumer` application intends to consume events published by `publisher`, and `consumer` intends to react to the
+events by making requests to the `publisher`'s web API. Rather than building these integrations against an instance of
+the `publisher`, the `consumer` can declare a dependency on the `publisher`'s stub jar, download some version of the
+contracts, and use Spring Cloud Contract in automated tests to mock the publication of messages and web APIs based on
+the contract definition.
 
 For details review the [`ConsumerStubTests`](consumer/src/test/java/dev/samsanders/demo/rabbitmq/consumer/ConsumerStubTests.java).
 
