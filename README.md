@@ -152,7 +152,7 @@ the `publisher`, the `consumer` can declare a dependency on the `publisher`'s st
 contracts, and use Spring Cloud Contract in automated tests to mock the publication of messages and web APIs based on
 the contract definition.
 
-For details review the [`ConsumerStubTests`](consumer/src/test/java/dev/samsanders/demo/rabbitmq/consumer/ConsumerStubTests.java).
+For details review the [`ConsumerStubTests`](consumer/src/contractTest/java/dev/samsanders/demo/rabbitmq/consumer/ConsumerStubTests.java).
 
 ##  References
 
